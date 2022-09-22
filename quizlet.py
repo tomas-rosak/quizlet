@@ -19,7 +19,7 @@ def zalozeni():
 def vytvoreni_lekce():
     with open("soubory/profile1/seznam_lekci", "a") as soubor:
         nazev = input("\nNew lesson name: ")
-        soubor.write(nazev)
+        soubor.write(nazev + "\n")
     term = []
     definice = []
     while True:
@@ -34,20 +34,87 @@ def vytvoreni_lekce():
     with open("soubory/profile1/" + nazev, "a") as soubor:
         for i in range(len(term)):
             soubor.write(term[i]+"\n")
-            soubor.write(definice[i]+"\n")        
+            soubor.write(definice[i]+"\n")
+    os.system("clear")       
 
-def lekce_nabidka(lekce_seznam):
-    pass
-            
- 
+
+def lekce_nabidka():
+    with open("soubory/profile1/seznam_lekci", "r") as soubor:
+        os.system("clear")  
+        print("Lesson:\n")
+        text = soubor.read()
+        text = text.split("\n")[:-1]
+        for i in range(len(text)):
+            print(i + 1, "-", text[i])
+        print(i + 2, "-", "Create new lesson")
+        
+        
+def provedeni_prikazu(vyber_prikazu, vyber_lekce, text):
+    if vyber_prikazu == 1:
+        cviceni(vyber_lekce, text)
+    elif vyber_prikazu == 2:
+        pass
+    elif vyber_prikazu == 3:
+        pass
+    else:
+        pass
+
+
+def cviceni(vyber_lekce, text):
+    with open("soubory/profile1/" + text[vyber_lekce - 1], "r") as soubor:
+        text = soubor.read()
+        text = text.split("\n")[:-1] 
+    opakovani = 0
+    karty = []
+    karta = []
+    for i in text:
+        karta.append(i)
+        opakovani += 1
+        if opakovani == 2:
+            karty.append(karta)
+            karta = []
+            opakovani = 0
+    random.shuffle(karty)
+    os.system("clear")
+    
+    opakovani = 0
+    while len(karty) != 0:
+        print("Term:", karty[0][-1])
+        definice = input("Definice: ")
+        if definice == karty[0][0]:
+            print("Correct")
+            karty.remove(karty[0])
+            os.system("clear")  
+        else:
+            print("Wrong --", karty[0][0])
+            karty.append(karty[0])
+            karty.remove(karty[0])
+            input()
+            os.system("clear")
+      
+    
 def main():
     novy = zalozeni()
     if novy == True:
         print("\nStart a new lesson")
         vytvoreni_lekce()   
     while True:
-        pass
-
+        lekce_nabidka()
+        vyber_lekce = int(input("Number of lesson: "))
+        with open("soubory/profile1/seznam_lekci", "r") as soubor:
+            text = soubor.read()
+            text = text.split("\n")[:-1]
+        if vyber_lekce == len(text) + 1:
+            vytvoreni_lekce()
+        else:
+            os.system("clear")    
+            print("Lesson", text[vyber_lekce-1] + ":\n")
+            print("1 - Exercise lesson")
+            print("2 - Edit lesson")
+            print("3 - Delete lesson")
+            vyber_prikazu = int(input("Number of operation: "))
+            provedeni_prikazu(vyber_prikazu, vyber_lekce, text)
+            
 
 
 
