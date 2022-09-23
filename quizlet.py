@@ -53,11 +53,51 @@ def provedeni_prikazu(vyber_prikazu, vyber_lekce, text):
     if vyber_prikazu == 1:
         cviceni(vyber_lekce, text)
     elif vyber_prikazu == 2:
-        pass
+        edit(vyber_lekce, text)
     elif vyber_prikazu == 3:
-        pass
+        delete(vyber_lekce, text)
     else:
         pass
+        
+
+def edit(vyber_lekce, lekce):
+    with open("soubory/profile1/" + lekce[vyber_lekce - 1], "r") as soubor:
+        text = soubor.read()
+        text = text.split("\n")[:-1]
+    opakovani = 0
+    karty = []
+    karta = []
+    for i in text:
+        karta.append(i)
+        opakovani += 1
+        if opakovani == 2:
+            karty.append(karta)
+            karta = []
+            opakovani = 0
+    os.system("clear")
+    for i in range(len(karty)):
+        print(i + 1, "- Term: " + karty[i][0])
+        print("    Definition: " + karty[i][-1])
+    while True:    
+        vyber_karty = input("\nNumber of card: ")
+        if vyber_karty == "end":
+            break 
+        else:
+            term1 = input("\nEnter term: ")
+            if term1 == "":
+                del karty[int(vyber_karty)-1]
+            else:
+                definice1 = input("Enter definition: ")
+                karty[int(vyber_karty)-1][0] = term1
+                karty[int(vyber_karty)-1][-1] = definice1
+        with open("soubory/profile1/" + lekce[vyber_lekce - 1], "w") as soubor:
+        for i in range(len(karty)):
+            soubor.write(karty[i][0]+"\n")
+            soubor.write(karty[i][-1]+"\n")   
+    
+    
+def delete(vyber_lekce, text):
+    pass 
 
 
 def cviceni(vyber_lekce, text):
