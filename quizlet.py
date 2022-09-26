@@ -91,9 +91,9 @@ def edit(vyber_lekce, lekce):
                 karty[int(vyber_karty)-1][0] = term1
                 karty[int(vyber_karty)-1][-1] = definice1
         with open("soubory/profile1/" + lekce[vyber_lekce - 1], "w") as soubor:
-        for i in range(len(karty)):
-            soubor.write(karty[i][0]+"\n")
-            soubor.write(karty[i][-1]+"\n")   
+            for i in range(len(karty)):
+                soubor.write(karty[i][0]+"\n")
+                soubor.write(karty[i][-1]+"\n")   
     
     
 def delete(vyber_lekce, text):
@@ -154,22 +154,5 @@ def main():
             print("3 - Delete lesson")
             vyber_prikazu = int(input("Number of operation: "))
             provedeni_prikazu(vyber_prikazu, vyber_lekce, text)
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 main()
