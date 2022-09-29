@@ -10,7 +10,7 @@ def zalozeni():
     else:
         os.makedirs("soubory/profile1")
         print("Welcome in Quizlet\n")
-        username = input("How is your name: ")
+        username = input("What is your name: ")
         with open("soubory/profile1/userdata", "w") as soubor:
             soubor.write(username)
         return True
@@ -116,23 +116,43 @@ def cviceni(vyber_lekce, text):
             opakovani = 0
     random.shuffle(karty)
     os.system("clear")
-    
-    opakovani = 0
+    index = 0
+    chyba = 0
     while len(karty) != 0:
-        print("Term:", karty[0][-1])
-        definice = input("Definice: ")
-        if definice == karty[0][0]:
-            print("Correct")
-            karty.remove(karty[0])
-            os.system("clear")  
-        else:
-            print("Wrong --", karty[0][0])
-            karty.append(karty[0])
-            karty.remove(karty[0])
+        kolo_petice = karty[:5]
+        petice = kolo_petice
+        while len(kolo_petice) != 0: 
+            print("Term:", kolo_petice[0][-1])
+            definice = input("Definice: ")
+            if definice == kolo_petice[0][0]:
+                print("Correct")
+                karty.remove(karty[index])
+                kolo_petice.remove(kolo_petice[0])
+                input()
+                os.system("clear")
+            else:
+                chyba += 1
+                print("Wrong ---", kolo_petice[0][0])
+                while True:
+                    slovo = input()
+                    if slovo == kolo_petice[0][0]:
+                        break         
+                kolo_petice.remove(kolo_petice[0])
+                index += 1
+                input()
+        
+                os.system("clear")
+        if len(karty) != 0:       
+            print(len(karty), "cards left")
             input()
-            os.system("clear")
-      
-    
+        os.system("clear")
+        index = 0
+        
+    print("Congratulations, lesson completed")
+    print("Your success rate:", str(100-(chyba/(len(karty)/100)) + "%")
+    input()
+            
+            
 def main():
     novy = zalozeni()
     if novy == True:
@@ -154,5 +174,5 @@ def main():
             print("3 - Delete lesson")
             vyber_prikazu = int(input("Number of operation: "))
             provedeni_prikazu(vyber_prikazu, vyber_lekce, text)
-
+            
 main()
